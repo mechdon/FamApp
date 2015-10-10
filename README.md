@@ -1,0 +1,3 @@
+FamApp
+
+This is the fifth project for Udacity’s iOS Nanodegree Course. This iOS app is a prototype for a family social app which allows family members to message one another, track one anothers' locations on a map and post upcoming events on a shared calendar.  The map comprises four main views: the Members View, which lists the members using the app, the Messaging View, The Map View and the Calendar View.  The Calendar uses Mozharovsky’s CVCalendar Library in GitHub (with permission under the MIT License), which was modified accordingly for this application. 
