@@ -23,9 +23,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     @IBOutlet weak var userEmail: UITextField!
     @IBOutlet weak var userPassword: UITextField!
     
-    // Declare variables
+    // Declare variable
     var error = ""
-    var checkBool:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +39,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
         if PFUser.currentUser() != nil {
             
             User = PFUser.currentUser()?.valueForKey("Name") as! String
-            getUserInfo()
+            Client.sharedInstance().getUserInfo()
             self.performSequetoTabBarController()
         }
         
@@ -50,8 +49,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
         // Check Current Access Token for Facebook and perform seque to Tab Bar Controller if available
         if (FBSDKAccessToken.currentAccessToken() != nil) {
             
-            returnUserData()
-            getUserInfo()
+            Client.sharedInstance().returnUserData()
+            Client.sharedInstance().getUserInfo()
             performSequetoTabBarController()
         }
         else
@@ -64,7 +63,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
                 loginView.readPermissions = ["public_profile", "email", "user_friends"]
                 loginView.delegate = self
         }
-
     }
     
     override func shouldAutorotate() -> Bool {
@@ -84,48 +82,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    // Get User's name and image to be used for messaging and map
-    func getUserInfo() {
-        
-        var query:PFQuery = PFQuery(className: "Members")
-        query.findObjectsInBackgroundWithBlock {
-            (objects:[AnyObject]?, error:NSError?) -> Void in
-            
-            if let objects = objects {
-                
-                for userObject in objects {
-                    
-                    let userName: String! = (userObject as! PFObject)["Name"] as? String
-                    let photo = (userObject as! PFObject)["photo"] as? PFFile
-                    var id = userObject.objectId!
-                    
-                    if userName == User {
-                        userImage = photo
-                        self.getUserUIImage()
-                        userId = id!
-                    }
-                }
-            }
-        }
-    }
-    
-    // Get userImage
-    func getUserUIImage() {
-        
-        userImage!.getDataInBackgroundWithBlock {
-            (imageData: NSData?, error:NSError?) -> Void in
-            
-            if (error == nil) {
-                userUIImage = UIImage(data: imageData!)
-                
-            } else {
-                var err = String(_cocoaString: error!)
-                self.showAlertMsg("UserImage Error", errorMsg: err)
-            }
-        }
-        
     }
     
     
@@ -160,11 +116,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
             IndicatorView.shared.hideActivityIndicator()
                 
                 if loginError == nil {
-                    
                     User = PFUser.currentUser()?.valueForKey("Name") as! String
-                    
-                    self.getUserInfo()
-                    
+                    Client.sharedInstance().getUserInfo()
                     self.performSequetoTabBarController()
                 } else {
                     if let errorString = loginError?.userInfo?["error"] as? NSString {
@@ -173,13 +126,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
                     self.error = "Please try again later"
                     }
                     self.showAlertMsg("Login Error", errorMsg: self.error)
+                    }
+                }
             }
-                    
-            }
-        
-            
         }
-    }
     
     // Function to perform seque to Tab Bar Controller
    func performSequetoTabBarController() {
@@ -222,7 +172,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
             {
                 // Do work
             }
-            returnUserData()
+            Client.sharedInstance().returnUserData()
             performSegueWithIdentifier("tabBarController", sender: self)
         }
         
@@ -232,75 +182,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
     }
     
-    // Obtain User Data via Facebook Login
-    func returnUserData()
-    {
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"id, name, email"])
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil)
-            {
-                // Process error
-                self.showAlertMsg("FBLogin Error", errorMsg: "Unable to retrieve user data")
-            }
-            else
-            {
-               let userId: String = result.valueForKey("id") as! String
-               let userName: String = result.valueForKey("name") as! String
-               let Email: String = result.valueForKey("email") as! String
-                User = userName
-        
-                var query = PFQuery(className: "Members")
-                query.findObjectsInBackgroundWithBlock {
-                    (objects:[AnyObject]?, error:NSError?) -> Void in
-                    
-                    if error == nil {
-                        
-                        for object in objects! {
-                        
-                            var tempId = object["userId"]! as! String
-                            var photo = (object as! PFObject)["photo"] as? PFFile
-                            
-                            if tempId == userId {
-                                userImage = photo
-                                self.checkBool = true
-                            }
-                        }
-                        
-                        if !self.checkBool {
-                            
-                            let url = NSURL(string: "http://graph.facebook.com/\(userId)/picture")
-                            let urlRequest = NSURLRequest(URL: url!)
-                            
-                            NSURLConnection.sendAsynchronousRequest(urlRequest, queue: NSOperationQueue.mainQueue()) {
-                                (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                                
-                                var image = UIImage(data: data! as NSData)!
-                                
-                                var userPhoto = PFFile(name: "photo.png", data: UIImagePNGRepresentation(image))
-                                
-                                userImage = userPhoto
-                                
-                                self.getUserUIImage()
-                                
-                                var user = PFObject(className: "Members")
-                                user.setObject(userId, forKey: "userId")
-                                user.setObject(userName, forKey: "Name")
-                                user.setObject(Email, forKey: "email")
-                                user.setObject(userPhoto, forKey: "photo")
-                                user.saveInBackground()
-                                
-                            }
-                        }
-                        
-                    } else {
-                        var err = String(_cocoaString: error!)
-                        self.showAlertMsg("FBLogin Error", errorMsg: err)
-                    }
-                }
-            }
-        })
-    }
-
+    
 }
 

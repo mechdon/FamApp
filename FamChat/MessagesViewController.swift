@@ -30,7 +30,6 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
     var startBool:Bool = true
     var objects:Int?
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,7 +53,6 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         
         // No lines for table
         self.messagesTableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        
     }
     
     override func shouldAutorotate() -> Bool {
@@ -82,7 +80,6 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         scrollToLastRow()
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -91,7 +88,6 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
     func tableViewTapped() {
         self.messageTextField.endEditing(true)
     }
-    
     
     // Send button pressed
     @IBAction func sendButtonPressed(sender: AnyObject) {
@@ -135,7 +131,6 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         let indexPath = NSIndexPath(forRow: objects!-1, inSection: 0)
         messagesTableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
     }
-    
     
     //# MARK: Text Field Methods
     
@@ -187,7 +182,6 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         
         }()
 
-    
     
     //# MARK: Table View Methods
     
@@ -265,7 +259,6 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         self.messagesTableView.endUpdates()
     }
     
-    
     func configureCell(cell: MessageTableViewCell, withMessage message: Message){
         
         // Initialise frames
@@ -288,14 +281,11 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    
     // Logout button pressed
     @IBAction func logout(sender: AnyObject) {
         loginManager.logOut()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    
     
 }
 

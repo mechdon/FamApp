@@ -23,7 +23,6 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
     var photos = [PFFile]()
     var startBool:Bool = true
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,7 +48,6 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
             startBool = false
             NSUserDefaults.standardUserDefaults().setBool(startBool, forKey: "startBool")
         }
-        
     }
     
     override func shouldAutorotate() -> Bool {
@@ -59,7 +57,6 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
     override func supportedInterfaceOrientations() -> Int {
         return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
-    
     
     // Periodically update member list
     override func viewDidAppear(animated: Bool) {
@@ -77,9 +74,6 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
     
     // Reload data in TableView
     func reloadData() {
@@ -118,8 +112,6 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
         
         }()
 
-
-    
     //# MARK - TableView Methods
     
     // Return number of members
@@ -146,7 +138,6 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // Launch corresponding URL for selected row
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
     }
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {

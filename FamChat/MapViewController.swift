@@ -69,15 +69,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                 object?.setValue(longitude, forKey: "longitude")              
                 object?.saveInBackground()
             } else {
-                println(error)
+                var err = String(_cocoaString: error!)
+                self.showAlertMsg("Location Error", errorMsg: err)
             }
         }
-        
     getusersLocations()
-   
     }
     
-
     // Retrieve user locations
     func getusersLocations() {
         
@@ -113,7 +111,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         }
     }
     
-    
     // Add annotations of user locations on map
     func addAnnotationsToMap(){
         
@@ -143,20 +140,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         dispatch_async(dispatch_get_main_queue()) {
             
            self.mapView.showAnnotations(annotations, animated: true)
-            
         }
         }
-    
     }
-
-    
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         var err = String(_cocoaString: error!)
         self.showAlertMsg("Location Manager Error", errorMsg: err)
     }
-    
-    
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
     
@@ -165,25 +156,19 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         }
         
         let reuseId = "users"
-        
         var annView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
         if annView == nil {
             annView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             annView.canShowCallout = true
-            
-
         } else {
             annView.annotation = annotation
-            
         }
-        
         let cpa = annotation as! CustomPointAnnotation
         var uImage: PFImageView = PFImageView(frame: CGRectMake(0, 0, 30, 30))
         uImage.file = cpa.photo
         uImage.loadInBackground()
         annView.image = uImage.image
         return annView
-        
     }
     
     // Show Alert Method
@@ -198,7 +183,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
-
     
     // Logout button pressed
     @IBAction func logout(sender: AnyObject) {

@@ -20,7 +20,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     var error = ""
     var userId: String = ""
     
-   
     override func viewDidAppear(animated: Bool) {
         
         // Set delegates for textfields
@@ -108,14 +107,11 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 } else {
                     self.error = "Please try again later"
                 }
-                
                     self.showAlertMsg("SignUp Error", errorMsg: self.error)
-
                 }
             }
         }
     }
-    
     
     // Show Alert Method
     func showAlertMsg(errorTitle: String, errorMsg: String) {
@@ -129,7 +125,5 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
-    
-    
     
 }

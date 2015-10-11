@@ -162,14 +162,12 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
         selectedDate = dateFormatter.stringFromDate(date!)
         
         for var i = 0; i < datesArray.count; i++ {
-            
             if selectedDate == datesArray[i]{
                 eventLabel.text = eventsArray[i]
                 venueLabel.text = locationsArray[i]
                 timeLabel.text = timesArray[i]
             }
         }
-        
         
         if dayView.isCurrentDay {
             selectedDateLabel.text = "Today"
@@ -185,9 +183,7 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
             selectedDateLabel.text = calendarView.presentedDate.commonDescription
             secondDateLabel.text = ""
         }
-    
     }
-    
     
     func presentedDateUpdated(date: CVDate) {
         
@@ -223,7 +219,6 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
                     self.monthLabel.alpha = 1
                     updatedMonthLabel.removeFromSuperview()
             }
-            
             self.view.insertSubview(updatedMonthLabel, aboveSubview: self.monthLabel)
         }
     }
@@ -243,7 +238,6 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
                 return true
             }
         }
-        
         return false
     }
     

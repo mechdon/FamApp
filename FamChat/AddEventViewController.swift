@@ -162,7 +162,6 @@ class AddEventViewController:UIViewController, UIPickerViewDelegate, UITextField
             showAlertMsg("Calendar Update Error", errorMsg: "Please fill in the event")
         }
         
-        
         else {
         IndicatorView.shared.showActivityIndicator(view)
         navigationItem.hidesBackButton = true

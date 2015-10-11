@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import CoreData
+import FBSDKLoginKit
 
 var imagesArray:[UIImage] = [UIImage]()
 var membersArray:[String] = [String]()
@@ -23,6 +24,7 @@ var userimage: UIImage?
 var lastmessObjId: String?
 var lastmemObjId: String?
 var lastcalObjId: String?
+var checkBool:Bool = false
 
 class Client: NSObject {
     
@@ -77,7 +79,6 @@ class Client: NSObject {
             NSUserDefaults.standardUserDefaults().setObject(timesArray, forKey: "timesArray")
             NSUserDefaults.standardUserDefaults().setObject(colorsArray, forKey: "colorsArray")
         }
-        
     }
     
     func retrieveNewEvent(){
@@ -115,7 +116,6 @@ class Client: NSObject {
                     NSUserDefaults.standardUserDefaults().setObject(locationsArray, forKey: "locationsArray")
                     NSUserDefaults.standardUserDefaults().setObject(timesArray, forKey: "timesArray")
                     NSUserDefaults.standardUserDefaults().setObject(colorsArray, forKey: "colorsArray")
-                    
                 }
             }
         }
@@ -156,7 +156,6 @@ class Client: NSObject {
                             CoreDataStackManager.sharedInstance().saveContext()
                         }
                     }
-                    
                 }
             }
         }
@@ -200,7 +199,6 @@ class Client: NSObject {
                 }
             }
         }
-        
     }
     
     
@@ -252,7 +250,6 @@ class Client: NSObject {
                 }
             }
         }
-        
     }
     
     func retrieveLastMessage(){
@@ -303,13 +300,123 @@ class Client: NSObject {
                             
                         }
                     }
-                    
                 }
-                
             }
-            
         }
     }
+    
+    // Get User's name and image to be used for messaging and map
+    func getUserInfo() {
+        
+        var query:PFQuery = PFQuery(className: "Members")
+        query.findObjectsInBackgroundWithBlock {
+            (objects:[AnyObject]?, error:NSError?) -> Void in
+            
+            if let objects = objects {
+                
+                for userObject in objects {
+                    
+                    let userName: String! = (userObject as! PFObject)["Name"] as? String
+                    let photo = (userObject as! PFObject)["photo"] as? PFFile
+                    var id = userObject.objectId!
+                    
+                    if userName == User {
+                        userImage = photo
+                        self.getUserUIImage()
+                        userId = id!
+                    }
+                }
+            }
+        }
+    }
+    
+    // Get userImage
+    func getUserUIImage() {
+        
+        userImage!.getDataInBackgroundWithBlock {
+            (imageData: NSData?, error:NSError?) -> Void in
+            
+            if (error == nil) {
+                userUIImage = UIImage(data: imageData!)
+                
+            } else {
+                userUIImage = UIImage(named: "profile")
+            }
+        }
+    }
+    
+    // Obtain User Data via Facebook Login
+    func returnUserData()
+    {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"id, name, email"])
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            
+            if ((error) != nil)
+            {
+                // Process error
+                LoginViewController().showAlertMsg("FBLogin Error", errorMsg: "Unable to retrieve user data")
+            }
+            else
+            {
+                let userId: String = result.valueForKey("id") as! String
+                let userName: String = result.valueForKey("name") as! String
+                let Email: String = result.valueForKey("email") as! String
+                User = userName
+                
+                var query = PFQuery(className: "Members")
+                query.findObjectsInBackgroundWithBlock {
+                    (objects:[AnyObject]?, error:NSError?) -> Void in
+                    
+                    if error == nil {
+                        
+                        for object in objects! {
+                            
+                            var tempId = object["userId"]! as! String
+                            var photo = (object as! PFObject)["photo"] as? PFFile
+                            
+                            if tempId == userId {
+                                userImage = photo
+                                checkBool = true
+                            }
+                        }
+                        
+                        if !checkBool {
+                            
+                            let url = NSURL(string: "http://graph.facebook.com/\(userId)/picture")
+                            let urlRequest = NSURLRequest(URL: url!)
+                            
+                            NSURLConnection.sendAsynchronousRequest(urlRequest, queue: NSOperationQueue.mainQueue()) {
+                                (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                                
+                                var image = UIImage(data: data! as NSData)!
+                                
+                                var userPhoto = PFFile(name: "photo.png", data: UIImagePNGRepresentation(image))
+                                
+                                userImage = userPhoto
+                                
+                                self.getUserUIImage()
+                                
+                                var user = PFObject(className: "Members")
+                                user.setObject(userId, forKey: "userId")
+                                user.setObject(userName, forKey: "Name")
+                                user.setObject(Email, forKey: "email")
+                                user.setObject(userPhoto, forKey: "photo")
+                                user.saveInBackground()
+                                
+                            }
+                        }
+                        
+                    } else {
+                        var err = String(_cocoaString: error!)
+                        LoginViewController().showAlertMsg("FBLogin Error", errorMsg: err)
+                    }
+                }
+            }
+        })
+    }
+
+    
+
 
     
     
