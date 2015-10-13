@@ -407,8 +407,8 @@ class Client: NSObject {
                         }
                         
                     } else {
-                        var err = String(_cocoaString: error!)
-                        LoginViewController().showAlertMsg("FBLogin Error", errorMsg: err)
+                        var err = error?.localizedDescription
+                        LoginViewController().showAlertMsg("FBLogin Error", errorMsg: err!)
                     }
                 }
             }

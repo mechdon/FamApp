@@ -145,8 +145,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-        var err = String(_cocoaString: error!)
-        self.showAlertMsg("Location Manager Error", errorMsg: err)
+        self.showAlertMsg("Location Manager Error", errorMsg: error.localizedDescription)
     }
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
