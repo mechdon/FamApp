@@ -41,7 +41,7 @@ class Client: NSObject {
     
     func retrieveCalendarEvents(){
         
-        var query:PFQuery = PFQuery(className: "Calendar")
+        let query:PFQuery = PFQuery(className: "Calendar")
         
         query.findObjectsInBackgroundWithBlock { (objects:[AnyObject]?, error: NSError?) -> Void in
             
@@ -83,7 +83,7 @@ class Client: NSObject {
     
     func retrieveNewEvent(){
         
-        var query:PFQuery = PFQuery(className: "Calendar")
+        let query:PFQuery = PFQuery(className: "Calendar")
         query.orderByDescending("createdAt")
         query.limit = 1
         
@@ -124,7 +124,7 @@ class Client: NSObject {
     
     func retrieveMembers() {
         
-        var query:PFQuery = PFQuery(className: "Members")
+        let query:PFQuery = PFQuery(className: "Members")
         
         query.findObjectsInBackgroundWithBlock { (objects:[AnyObject]?, error:NSError?) -> Void in
             
@@ -163,7 +163,7 @@ class Client: NSObject {
     
     func updateMemberList() {
         
-        var query:PFQuery = PFQuery(className: "Members")
+        let query:PFQuery = PFQuery(className: "Members")
         query.orderByDescending("createdAt")
         query.limit = 1
         
@@ -206,7 +206,7 @@ class Client: NSObject {
     func retrieveMessages() {
         
         // Create a new PFQuery
-        var query:PFQuery = PFQuery(className: "Messages")
+        let query:PFQuery = PFQuery(className: "Messages")
         
         // Call findobjectsinbackground
         query.findObjectsInBackgroundWithBlock { (objects:[AnyObject]?, error: NSError?) -> Void in
@@ -225,7 +225,7 @@ class Client: NSObject {
                     let image:PFFile? = (messageObject as! PFObject)["userImage"] as? PFFile
                     let date = messageObject.createdAt as NSDate!
                                         
-                    var dateFormatter = NSDateFormatter()
+                    let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = "dd-MM-yyyy       HH:mm"
                     
                     let datetime:String? = dateFormatter.stringFromDate(date)
@@ -255,7 +255,7 @@ class Client: NSObject {
     func retrieveLastMessage(){
         
         // Create a new PFQuery
-        var query:PFQuery = PFQuery(className: "Messages")
+        let query:PFQuery = PFQuery(className: "Messages")
         
         query.orderByDescending("createdAt")
         query.limit = 1
@@ -273,7 +273,7 @@ class Client: NSObject {
                     let date  = firstObject.createdAt as NSDate!
                     let objId:String? = firstObject.objectId
                     
-                    var dateFormatter = NSDateFormatter()
+                    let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = "dd-MM-yyyy       HH:mm"
                     
                     let datetime:String? = dateFormatter.stringFromDate(date)
@@ -308,7 +308,7 @@ class Client: NSObject {
     // Get User's name and image to be used for messaging and map
     func getUserInfo() {
         
-        var query:PFQuery = PFQuery(className: "Members")
+        let query:PFQuery = PFQuery(className: "Members")
         query.findObjectsInBackgroundWithBlock {
             (objects:[AnyObject]?, error:NSError?) -> Void in
             
@@ -318,7 +318,7 @@ class Client: NSObject {
                     
                     let userName: String! = (userObject as! PFObject)["Name"] as? String
                     let photo = (userObject as! PFObject)["photo"] as? PFFile
-                    var id = userObject.objectId!
+                    let id = userObject.objectId!
                     
                     if userName == User {
                         userImage = photo
@@ -363,7 +363,7 @@ class Client: NSObject {
                 let Email: String = result.valueForKey("email") as! String
                 User = userName
                 
-                var query = PFQuery(className: "Members")
+                let query = PFQuery(className: "Members")
                 query.findObjectsInBackgroundWithBlock {
                     (objects:[AnyObject]?, error:NSError?) -> Void in
                     
@@ -371,8 +371,8 @@ class Client: NSObject {
                         
                         for object in objects! {
                             
-                            var tempId = object["userId"]! as! String
-                            var photo = (object as! PFObject)["photo"] as? PFFile
+                            let tempId = object["userId"]! as! String
+                            let photo = (object as! PFObject)["photo"] as? PFFile
                             
                             if tempId == userId {
                                 userImage = photo
@@ -382,21 +382,23 @@ class Client: NSObject {
                         
                         if !checkBool {
                             
-                            let url = NSURL(string: "http://graph.facebook.com/\(userId)/picture")
-                            let urlRequest = NSURLRequest(URL: url!)
+                           // let url = NSURL(string: "http://graph.facebook.com/\(userId)/picture")
+                          //  let urlRequest = NSURLRequest(URL: url!)
+                            
+                            let urlRequest = NSMutableURLRequest(URL: NSURL(string: "http://graph.facebook.com/\(userId)/picture")!, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 10.0)
                             
                             NSURLConnection.sendAsynchronousRequest(urlRequest, queue: NSOperationQueue.mainQueue()) {
-                                (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                                (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
                                 
-                                var image = UIImage(data: data! as NSData)!
+                                let image = UIImage(data: data! as NSData)!
                                 
-                                var userPhoto = PFFile(name: "photo.png", data: UIImagePNGRepresentation(image))
+                                let userPhoto = PFFile(name: "photo.png", data: UIImagePNGRepresentation(image)!)
                                 
                                 userImage = userPhoto
                                 
                                 self.getUserUIImage()
                                 
-                                var user = PFObject(className: "Members")
+                                let user = PFObject(className: "Members")
                                 user.setObject(userId, forKey: "userId")
                                 user.setObject(userName, forKey: "Name")
                                 user.setObject(Email, forKey: "email")
@@ -407,7 +409,7 @@ class Client: NSObject {
                         }
                         
                     } else {
-                        var err = error?.localizedDescription
+                        let err = error?.localizedDescription
                         LoginViewController().showAlertMsg("FBLogin Error", errorMsg: err!)
                     }
                 }

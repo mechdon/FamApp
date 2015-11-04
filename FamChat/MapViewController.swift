@@ -34,8 +34,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     var memberPhotosLoc = [PFFile]()
     var latArray:[NSNumber] = [NSNumber]()
     var lonArray:[NSNumber] = [NSNumber]()
+    var span:MKCoordinateSpan?
+    var location: CLLocationCoordinate2D?
     
-
        
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,17 +50,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     // Update user location in background
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        var userLocation:CLLocation? = locations[0] as? CLLocation
-        var latitude:CLLocationDegrees = userLocation!.coordinate.latitude
-        var longitude:CLLocationDegrees = userLocation!.coordinate.longitude
-        var latDelta: CLLocationDegrees = 0.01
-        var lonDelta: CLLocationDegrees = 0.01
-        var span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
-        var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        let userLocation:CLLocation? = locations[0]
+        let latitude:CLLocationDegrees = userLocation!.coordinate.latitude
+        let longitude:CLLocationDegrees = userLocation!.coordinate.longitude
+        let latDelta: CLLocationDegrees = 0.01
+        let lonDelta: CLLocationDegrees = 0.01
+        span = MKCoordinateSpanMake(latDelta, lonDelta)
+        location = CLLocationCoordinate2DMake(latitude, longitude)
         
-        var query = PFQuery(className: "Members")
+        let query = PFQuery(className: "Members")
         
         query.getObjectInBackgroundWithId(userId) {
             (object, error) -> Void in
@@ -69,8 +70,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                 object?.setValue(longitude, forKey: "longitude")              
                 object?.saveInBackground()
             } else {
-                var err = String(_cocoaString: error!)
-                self.showAlertMsg("Location Error", errorMsg: err)
+               self.showAlertMsg("Location Error", errorMsg: (error?.localizedDescription)!)
             }
         }
     getusersLocations()
@@ -79,7 +79,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     // Retrieve user locations
     func getusersLocations() {
         
-        var query:PFQuery = PFQuery(className: "Members")
+        let query:PFQuery = PFQuery(className: "Members")
         
         query.findObjectsInBackgroundWithBlock { (objects:[AnyObject]?, error:NSError?) -> Void in
             
@@ -120,15 +120,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             
             lat = latArray[i] as Double
             lon = lonArray[i] as Double
-            var title = membersnameLocation[i]
+            let title = membersnameLocation[i]
             
             pPhoto = memberPhotosLoc[i]
             
-            var latitude:CLLocationDegrees = lat
-            var longitude:CLLocationDegrees = lon
-            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+            let latitude:CLLocationDegrees = lat
+            let longitude:CLLocationDegrees = lon
+            let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
             
-            var annotation = CustomPointAnnotation()
+            let annotation = CustomPointAnnotation()
             annotation.coordinate = location
             annotation.title = title
             annotation.photo = pPhoto
@@ -144,11 +144,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         self.showAlertMsg("Location Manager Error", errorMsg: error.localizedDescription)
     }
     
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
     
         if !(annotation is CustomPointAnnotation) {
             return nil
@@ -158,24 +158,24 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         var annView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
         if annView == nil {
             annView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            annView.canShowCallout = true
+            annView!.canShowCallout = true
         } else {
-            annView.annotation = annotation
+            annView!.annotation = annotation
         }
         let cpa = annotation as! CustomPointAnnotation
-        var uImage: PFImageView = PFImageView(frame: CGRectMake(0, 0, 30, 30))
+        let uImage: PFImageView = PFImageView(frame: CGRectMake(0, 0, 30, 30))
         uImage.file = cpa.photo
         uImage.loadInBackground()
-        annView.image = uImage.image
+        annView!.image = uImage.image
         return annView
     }
     
     // Show Alert Method
     func showAlertMsg(errorTitle: String, errorMsg: String) {
-        var title = errorTitle
-        var errormsg = errorMsg
+        let title = errorTitle
+        let errormsg = errorMsg
         
-        NSOperationQueue.mainQueue().addOperationWithBlock{ var alert = UIAlertController(title: title, message: errormsg, preferredStyle: UIAlertControllerStyle.Alert)
+        NSOperationQueue.mainQueue().addOperationWithBlock{ let alert = UIAlertController(title: title, message: errormsg, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
                 // No further action apart from dismissing this alert
             }))

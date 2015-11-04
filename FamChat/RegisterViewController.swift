@@ -28,14 +28,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         self.password.delegate = self
     }
     
-    override func shouldAutorotate() -> Bool {
-        return false
-    }
-    
-    override func supportedInterfaceOrientations() -> Int {
-        return UIInterfaceOrientation.Portrait.rawValue
-    }
-    
     // Textfield resigns first responder when return key is pressed
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -51,10 +43,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     // Register button pressed
     @IBAction func register(sender: AnyObject) {
         
-        var nameString: String = name.text
-        var userNameString: String = email.text
-        var emailString: String = email.text
-        var passwordString: String = password.text
+        let nameString: String = name.text!
+    //    let userNameString: String = email.text!
+        let emailString: String = email.text!
+        let passwordString: String = password.text!
         
         // Prompt user to enter name if username field is empty
         if nameString.isEmpty {
@@ -74,8 +66,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         else {
             
             // SignUp user
-            var user = PFUser()
-            user.setObject(name.text, forKey: "Name")
+            let user = PFUser()
+            user.setObject(name.text!, forKey: "Name")
             user.username = email.text
             user.password = password.text
             user.email = email.text
@@ -89,20 +81,24 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
 
                 if signupError == nil {
                     
-                    var image = UIImage(named: "profile.png")
-                    var memberPhoto = PFFile(name: "photo.png", data: UIImagePNGRepresentation(image))
+                    let image = UIImage(named: "profile.png")
+                    let memberPhoto = PFFile(name: "photo.png", data: UIImagePNGRepresentation(image!)!)
                 
-                    var member = PFObject(className: "Members")
+                    let member = PFObject(className: "Members")
                     member.setObject(user.objectId!, forKey: "userId")
-                    member.setObject(self.name.text, forKey: "Name")
-                    member.setObject(self.email.text, forKey: "email")
+                    member.setObject(self.name.text!, forKey: "Name")
+                    member.setObject(self.email.text!, forKey: "email")
                     member.setObject(memberPhoto, forKey: "photo")
                     member.saveInBackground()
+                    
+                   User = self.name.text!
+                    userImage = memberPhoto
                     self.performSegueWithIdentifier("toTabBarController", sender: self)
                     
+                    
                 } else {
-                    if let errorString = signupError?.userInfo?["error"] as? NSString {
-                    self.error = errorString as! String
+                    if let errorString = signupError?.userInfo["error"] as? NSString {
+                    self.error = errorString as String
                     
                 } else {
                     self.error = "Please try again later"
@@ -115,10 +111,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     
     // Show Alert Method
     func showAlertMsg(errorTitle: String, errorMsg: String) {
-        var title = errorTitle
-        var errormsg = errorMsg
+        let title = errorTitle
+        let errormsg = errorMsg
         
-        NSOperationQueue.mainQueue().addOperationWithBlock{ var alert = UIAlertController(title: title, message: errormsg, preferredStyle: UIAlertControllerStyle.Alert)
+        NSOperationQueue.mainQueue().addOperationWithBlock{ let alert = UIAlertController(title: title, message: errormsg, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
                 // No further action apart from dismissing this alert
             }))

@@ -59,16 +59,16 @@ class CalendarViewController: UIViewController {
         
         // Get next day and previous day
         let tomDate = NSCalendar.currentCalendar().dateByAddingUnit(
-            .CalendarUnitDay,
+            .Day,
             value: 1,
             toDate: todaysDate,
-            options: NSCalendarOptions(0))
+            options: NSCalendarOptions(rawValue: 0))
         
         let yesDate = NSCalendar.currentCalendar().dateByAddingUnit(
-            .CalendarUnitDay,
+            .Day,
             value: -1,
             toDate: todaysDate,
-            options: NSCalendarOptions(0))
+            options: NSCalendarOptions(rawValue: 0))
         
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy"
@@ -86,13 +86,6 @@ class CalendarViewController: UIViewController {
         }
     }
     
-    override func shouldAutorotate() -> Bool {
-        return false
-    }
-    
-    override func supportedInterfaceOrientations() -> Int {
-        return UIInterfaceOrientation.Portrait.rawValue
-    }
     
     // Periodically retrieve a new event if available
     override func viewDidAppear(animated: Bool) {
@@ -157,7 +150,7 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
         timeLabel.text = ""
         venueLabel.text = ""
         
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy"
         selectedDate = dateFormatter.stringFromDate(date!)
         
@@ -229,7 +222,7 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     
     // Set dotMarkers
     func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy"
         dayViewDate = dateFormatter.stringFromDate(dayView.date.convertedDate()!)
         
@@ -243,7 +236,7 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     
     // Set dotMarker colors
     func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> [UIColor] {
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy"
         dayViewDate = dateFormatter.stringFromDate(dayView.date.convertedDate()!)
         
@@ -276,7 +269,7 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
 
 // MARK: - CVCalendarViewDelegate
 
-extension CalendarViewController: CVCalendarViewDelegate {
+extension CalendarViewController {
     func preliminaryView(viewOnDayView dayView: DayView) -> UIView {
         let circleView = CVAuxiliaryView(dayView: dayView, rect: dayView.bounds, shape: CVShape.Circle)
         circleView.fillColor = .colorFromCode(0xCCCCCC)
@@ -300,7 +293,7 @@ extension CalendarViewController: CVCalendarViewDelegate {
         let ringLineWidth: CGFloat = 4.0
         let ringLineColour: UIColor = .blueColor()
         
-        var newView = UIView(frame: dayView.bounds)
+        let newView = UIView(frame: dayView.bounds)
         
         let diameter: CGFloat = (newView.bounds.width) - ringSpacing
         let radius: CGFloat = diameter / 2.0
@@ -314,7 +307,7 @@ extension CalendarViewController: CVCalendarViewDelegate {
         ringLayer.lineWidth = ringLineWidth
         ringLayer.strokeColor = ringLineColour.CGColor
         
-        var ringLineWidthInset: CGFloat = CGFloat(ringLineWidth/2.0) + ringInsetWidth
+        let ringLineWidthInset: CGFloat = CGFloat(ringLineWidth/2.0) + ringInsetWidth
         let ringRect: CGRect = CGRectInset(rect, ringLineWidthInset, ringLineWidthInset)
         let centrePoint: CGPoint = CGPointMake(ringRect.midX, ringRect.midY)
         let startAngle: CGFloat = CGFloat(-π/2.0)

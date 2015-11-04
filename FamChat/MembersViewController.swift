@@ -30,8 +30,11 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
         self.membersTableView.delegate = self
         self.membersTableView.dataSource = self
         
-        // Set delegate for fetchedResultsController
-        fetchedResultsController.performFetch(nil)
+        do {
+            // Set delegate for fetchedResultsController
+            try fetchedResultsController.performFetch()
+        } catch _ {
+        }
         fetchedResultsController.delegate = self
         
         // Check if the app is launched for the first time and there is no persistent data saved previously
@@ -54,8 +57,8 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
         return false
     }
     
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
     
     // Periodically update member list
@@ -116,7 +119,7 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // Return number of members
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = self.fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResultsController.sections![section] 
         if (sectionInfo.numberOfObjects == count) {
             IndicatorView.shared.hideActivityIndicator()}
         return sectionInfo.numberOfObjects
@@ -165,32 +168,28 @@ class MembersViewController: UIViewController, UITableViewDataSource, UITableVie
     // This is the most interesting method. Take particular note of way the that newIndexPath
     // parameter gets unwrapped and put into an array literal: [newIndexPath!]
     //
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject anObject: AnyObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?) {
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        
+        switch type {
+        case .Insert:
+            membersTableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
             
-            switch type {
-            case .Insert:
-                membersTableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-                
-            case .Delete:
-                membersTableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                
-            case .Update:
-                let cell = membersTableView.cellForRowAtIndexPath(indexPath!) as! MemberTableViewCell
-                let member = controller.objectAtIndexPath(indexPath!) as! Person
-                self.configureCell(cell, withMember: member)
-                
-            case .Move:
-                membersTableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                membersTableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-                
-            default:
-                return
-            }
+        case .Delete:
+            membersTableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            
+        case .Update:
+            let cell = membersTableView.cellForRowAtIndexPath(indexPath!) as! MemberTableViewCell
+            let member = controller.objectAtIndexPath(indexPath!) as! Person
+            self.configureCell(cell, withMember: member)
+            
+        case .Move:
+            membersTableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            membersTableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+            
+        }
     }
+    
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         self.membersTableView.endUpdates()

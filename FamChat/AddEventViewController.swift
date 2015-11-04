@@ -43,13 +43,7 @@ class AddEventViewController:UIViewController, UIPickerViewDelegate, UITextField
         colorPicker.selectRow(2, inComponent: 0, animated: true)
         
     }
-    override func shouldAutorotate() -> Bool {
-        return false
-    }
     
-    override func supportedInterfaceOrientations() -> Int {
-        return UIInterfaceOrientation.Portrait.rawValue
-    }
     
     override func viewWillAppear(animated: Bool) {
         self.subscribeToKeyboardNotifications()
@@ -116,14 +110,14 @@ class AddEventViewController:UIViewController, UIPickerViewDelegate, UITextField
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        var selectedColor = colors[row]
+        let selectedColor = colors[row]
         color = selectedColor
     }
     
     //# MARK: DatePicker Methods
     
     func getSelectedDateTime() {
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         selectedDateTime = dateFormatter.stringFromDate(eventDatePicker.date)
     }
@@ -135,10 +129,10 @@ class AddEventViewController:UIViewController, UIPickerViewDelegate, UITextField
     
     // Show Alert Method
     func showAlertMsg(errorTitle: String, errorMsg: String) {
-        var title = errorTitle
-        var errormsg = errorMsg
+        let title = errorTitle
+        let errormsg = errorMsg
         
-        NSOperationQueue.mainQueue().addOperationWithBlock{ var alert = UIAlertController(title: title, message: errormsg, preferredStyle: UIAlertControllerStyle.Alert)
+        NSOperationQueue.mainQueue().addOperationWithBlock{ let alert = UIAlertController(title: title, message: errormsg, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
             }))
             self.presentViewController(alert, animated: true, completion: nil)
@@ -150,7 +144,7 @@ class AddEventViewController:UIViewController, UIPickerViewDelegate, UITextField
         
         self.eventLocationTF.endEditing(true)
         
-        var eventString: String = eventTF.text
+        let eventString: String = eventTF.text!
         
         // Check if device is connected to the Internet
         if Reachability.isConnectedToNetwork() == false {
@@ -171,7 +165,7 @@ class AddEventViewController:UIViewController, UIPickerViewDelegate, UITextField
         selectedDate = splitDateTime[0]
         selectedTime = splitDateTime[1]
         
-        var newEventObject:PFObject = PFObject(className: "Calendar")
+        let newEventObject:PFObject = PFObject(className: "Calendar")
         newEventObject["Date"] = selectedDate
         newEventObject["Event"] = eventTF.text
         newEventObject["Location"] = eventLocationTF.text

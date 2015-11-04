@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -45,13 +45,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyV-dk-sio">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Don't have an account?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyV-dk-sio">
                                 <rect key="frame" x="16" y="335" width="173" height="20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="0.1081957769" green="0.65448879820000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7nH-eN-KnD">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7nH-eN-KnD">
                                 <rect key="frame" x="243" y="329" width="61" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Register">
@@ -185,8 +185,10 @@
                         <color key="sectionIndexBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="memberCell" rowHeight="85" id="iyw-wJ-XbD" customClass="MemberTableViewCell" customModule="FamChat">
+                                <rect key="frame" x="0.0" y="86" width="320" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iyw-wJ-XbD" id="5uJ-Yn-sL5">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="WhY-60-aFf">
@@ -218,6 +220,11 @@
                                 <action selector="logout:" destination="HGF-9w-cuf" id="CLs-ks-qGj"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="4i5-UM-eNw">
+                            <connections>
+                                <segue destination="kEr-YD-snb" kind="show" id="Ha8-lt-nEw"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
@@ -227,7 +234,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wZK-Sv-x8H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1626" y="-642"/>
+            <point key="canvasLocation" x="1626" y="-637"/>
         </scene>
         <!--Family Members-->
         <scene sceneID="5BP-c6-BDE">
@@ -452,8 +459,10 @@
                                 <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" rowHeight="125" id="dWW-Ek-lvt" customClass="MessageTableViewCell" customModule="FamChat">
+                                        <rect key="frame" x="0.0" y="86" width="320" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dWW-Ek-lvt" id="Taf-1F-5JR">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bubble.png" translatesAutoresizingMaskIntoConstraints="NO" id="c1C-hd-Id8">
@@ -563,7 +572,7 @@
             </objects>
             <point key="canvasLocation" x="1626" y="5"/>
         </scene>
-        <!--Calendar-->
+        <!--Calendar Appearance Delegate-->
         <scene sceneID="uur-Pu-HH1">
             <objects>
                 <viewController id="VUx-gx-co9" customClass="CalendarViewController" customModule="FamChat" sceneMemberID="viewController">
@@ -575,7 +584,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January, 2015" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rei-UT-U7X">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="January, 2015" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rei-UT-U7X">
                                 <rect key="frame" x="97" y="77" width="127" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -587,7 +596,7 @@
                                     <outlet property="menuViewDelegate" destination="VUx-gx-co9" id="Wgu-0L-IJ8"/>
                                 </connections>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OAA-sy-ezI">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OAA-sy-ezI">
                                 <rect key="frame" x="271" y="72" width="33" height="33"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="33" id="I6C-Sv-fBT"/>
@@ -600,11 +609,11 @@
                                     <action selector="todayMonthView" destination="VUx-gx-co9" eventType="touchUpInside" id="6tO-cX-8Gv"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xz5-3E-zzU">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xz5-3E-zzU">
                                 <rect key="frame" x="0.0" y="429" width="600" height="58"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veH-7v-RnJ">
-                                        <rect key="frame" x="234" y="18" width="366" height="21"/>
+                                        <rect key="frame" x="198" y="18" width="139" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -617,8 +626,11 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.87450980389999999" green="0.84705882349999995" blue="0.69803921570000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="58" id="djz-4a-keu"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mQr-43-ruH" customClass="CVCalendarView" customModule="FamChat">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mQr-43-ruH" customClass="CVCalendarView" customModule="FamChat">
                                 <rect key="frame" x="10" y="117" width="300" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="0Uc-Gn-PjL"/>
@@ -629,14 +641,8 @@
                                     <outlet property="calendarDelegate" destination="VUx-gx-co9" id="aEb-qP-NG8"/>
                                 </connections>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="evZ-OQ-DrX">
-                                <rect key="frame" x="245" y="520" width="47" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XHc-DE-Rbf">
-                                <rect key="frame" x="16" y="520" width="47" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="evZ-OQ-DrX">
+                                <rect key="frame" x="247" y="498" width="47" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -647,16 +653,26 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XHc-DE-Rbf">
+                                <rect key="frame" x="20" y="498" width="47" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="mQr-43-ruH" firstAttribute="top" secondItem="goV-WS-Ktd" secondAttribute="bottom" constant="8" id="1YO-dw-V0R"/>
+                            <constraint firstItem="Llr-aE-PDZ" firstAttribute="top" secondItem="evZ-OQ-DrX" secondAttribute="bottom" constant="4" id="32S-DK-chU"/>
                             <constraint firstAttribute="centerX" secondItem="goV-WS-Ktd" secondAttribute="centerX" id="Cvf-1K-6ij"/>
-                            <constraint firstItem="Rei-UT-U7X" firstAttribute="top" secondItem="JY0-md-Iu1" secondAttribute="bottom" constant="13" id="Qv2-Lc-xFA"/>
+                            <constraint firstItem="G1q-1K-VTW" firstAttribute="top" secondItem="Xz5-3E-zzU" secondAttribute="bottom" constant="4" id="E4R-8p-wbt"/>
+                            <constraint firstItem="Rei-UT-U7X" firstAttribute="top" secondItem="JY0-md-Iu1" secondAttribute="bottom" constant="4" id="O5r-fd-5jN"/>
                             <constraint firstAttribute="centerX" secondItem="G1q-1K-VTW" secondAttribute="centerX" id="YnC-iH-ajx"/>
+                            <constraint firstItem="Llr-aE-PDZ" firstAttribute="top" secondItem="XHc-DE-Rbf" secondAttribute="bottom" constant="4" id="bjb-rx-2ve"/>
                             <constraint firstItem="OAA-sy-ezI" firstAttribute="trailing" secondItem="eCd-pS-73V" secondAttribute="trailingMargin" id="d9f-cw-Xvp"/>
                             <constraint firstItem="Rei-UT-U7X" firstAttribute="centerY" secondItem="OAA-sy-ezI" secondAttribute="centerY" constant="0.5" id="gtv-R5-KDF"/>
                             <constraint firstAttribute="centerX" secondItem="mQr-43-ruH" secondAttribute="centerX" id="oDq-zx-4ac"/>
+                            <constraint firstItem="Xz5-3E-zzU" firstAttribute="top" secondItem="mQr-43-ruH" secondAttribute="bottom" id="q1j-eA-hYN"/>
                             <constraint firstAttribute="centerX" secondItem="Rei-UT-U7X" secondAttribute="centerX" id="r4Z-rQ-rUp"/>
                             <constraint firstItem="goV-WS-Ktd" firstAttribute="top" secondItem="OAA-sy-ezI" secondAttribute="bottom" constant="4" id="zwP-63-TYm"/>
                         </constraints>
@@ -803,6 +819,52 @@
             </objects>
             <point key="canvasLocation" x="2030" y="1288"/>
         </scene>
+        <!--Address Book View Controller-->
+        <scene sceneID="sQ1-IH-Dv4">
+            <objects>
+                <viewController storyboardIdentifier="AddressBookViewController" id="kEr-YD-snb" customClass="AddressBookViewController" customModule="FamChat" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="voo-YR-GSn"/>
+                        <viewControllerLayoutGuide type="bottom" id="AQp-Lv-Gwc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pS8-zA-i9u">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RDE-qB-YGh">
+                                <rect key="frame" x="16" y="64" width="288" height="460"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="jF0-2n-ddN">
+                                        <rect key="frame" x="0.0" y="86" width="288" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jF0-2n-ddN" id="Hxg-MP-8S2">
+                                            <rect key="frame" x="0.0" y="0.0" width="288" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="AQp-Lv-Gwc" firstAttribute="top" secondItem="RDE-qB-YGh" secondAttribute="bottom" id="4AT-6u-sku"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="RDE-qB-YGh" secondAttribute="trailing" id="9k0-8d-mqw"/>
+                            <constraint firstItem="RDE-qB-YGh" firstAttribute="leading" secondItem="pS8-zA-i9u" secondAttribute="leadingMargin" id="P37-1L-Z3s"/>
+                            <constraint firstItem="RDE-qB-YGh" firstAttribute="top" secondItem="voo-YR-GSn" secondAttribute="bottom" id="Pu3-m2-8x0"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="addressbookTableView" destination="RDE-qB-YGh" id="7On-7F-eN0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qwf-zA-eEF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2007" y="-637"/>
+        </scene>
     </scenes>
     <resources>
         <image name="CalendarIcon" width="30" height="30"/>
@@ -818,6 +880,6 @@
         <image name="register.png" width="300" height="46"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ayr-C7-Apt"/>
+        <segue reference="R3G-Yh-zDM"/>
     </inferredMetricsTieBreakers>
 </document>

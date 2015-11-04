@@ -43,8 +43,11 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         self.messagesTableView.dataSource = self
         self.messageTextField.delegate = self
         
-        // Set delegate for fetchedResultsController
-        fetchedResultsController.performFetch(nil)
+        do {
+            // Set delegate for fetchedResultsController
+            try fetchedResultsController.performFetch()
+        } catch _ {
+        }
         fetchedResultsController.delegate = self
         
         // Add a tap gesture recognizer to the tableview
@@ -53,14 +56,6 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         
         // No lines for table
         self.messagesTableView.separatorStyle = UITableViewCellSeparatorStyle.None
-    }
-    
-    override func shouldAutorotate() -> Bool {
-        return false
-    }
-    
-    override func supportedInterfaceOrientations() -> Int {
-        return UIInterfaceOrientation.Portrait.rawValue
     }
     
     // Periodically retrieve a new message from Parse
@@ -99,7 +94,7 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
         self.sendButton.enabled = false
         
         // Create a PFObject
-        var newMessageObject:PFObject = PFObject(className: "Messages")
+        let newMessageObject:PFObject = PFObject(className: "Messages")
         
         // Set the Text key to the messageTextField
         newMessageObject["Text"] = self.messageTextField.text
@@ -186,7 +181,7 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
     //# MARK: Table View Methods
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = self.fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResultsController.sections![section] 
         objects = sectionInfo.numberOfObjects
         return objects!
     }
@@ -228,31 +223,26 @@ class MessagesViewController: UIViewController, UITableViewDelegate, UITableView
     // This is the most interesting method. Take particular note of way the that newIndexPath
     // parameter gets unwrapped and put into an array literal: [newIndexPath!]
     //
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject anObject: AnyObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?) {
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        
+        switch type {
+        case .Insert:
+            messagesTableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
             
-            switch type {
-            case .Insert:
-                messagesTableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-                
-            case .Delete:
-                messagesTableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                
-            case .Update:
-                let cell = messagesTableView.cellForRowAtIndexPath(indexPath!) as! MessageTableViewCell
-                let message = controller.objectAtIndexPath(indexPath!) as! Message
-                self.configureCell(cell, withMessage: message)
-                
-            case .Move:
-                messagesTableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                messagesTableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-                
-            default:
-                return
-            }
+        case .Delete:
+            messagesTableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            
+        case .Update:
+            let cell = messagesTableView.cellForRowAtIndexPath(indexPath!) as! MessageTableViewCell
+            let message = controller.objectAtIndexPath(indexPath!) as! Message
+            self.configureCell(cell, withMessage: message)
+            
+        case .Move:
+            messagesTableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            messagesTableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        
+        }
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {

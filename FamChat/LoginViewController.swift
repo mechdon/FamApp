@@ -16,6 +16,7 @@ var Id: String = ""
 var userImage:PFFile?
 var userUIImage:UIImage?
 var userId: String = ""
+var uuid: String = ""
 
 class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
     
@@ -29,7 +30,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var uuid = NSUUID().UUIDString
+        uuid = NSUUID().UUIDString
         
        }
     
@@ -65,14 +66,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
         }
     }
     
-    override func shouldAutorotate() -> Bool {
-        return false
-    }
-    
-    override func supportedInterfaceOrientations() -> Int {
-        return UIInterfaceOrientation.Portrait.rawValue
-    }
-    
+        
     // Textfield resigns first responder when return key is pressed
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -88,8 +82,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     // Login button pressed
     @IBAction func loginPressed(sender: AnyObject) {
         
-        var emailString: String = userEmail.text
-        var passwordString: String = userPassword.text
+        var emailString: String = userEmail.text!
+        var passwordString: String = userPassword.text!
         
         // Check if device is connected to the Internet
         if Reachability.isConnectedToNetwork() == false {
@@ -110,7 +104,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
             
             IndicatorView.shared.showActivityIndicator(view)
             
-            PFUser.logInWithUsernameInBackground(userEmail.text, password:userPassword.text) {
+            PFUser.logInWithUsernameInBackground(userEmail.text!, password:userPassword.text!) {
                 (user: PFUser?, loginError: NSError?) -> Void in
                 
             IndicatorView.shared.hideActivityIndicator()
@@ -120,7 +114,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
                     Client.sharedInstance().getUserInfo()
                     self.performSequetoTabBarController()
                 } else {
-                    if let errorString = loginError?.userInfo?["error"] as? NSString {
+                    if let errorString = loginError?.userInfo["error"] as? NSString {
                     self.error = errorString as String
                     } else {
                     self.error = "Please try again later"
@@ -140,10 +134,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     
     // Show Alert Method
     func showAlertMsg(errorTitle: String, errorMsg: String) {
-        var title = errorTitle
-        var errormsg = errorMsg
+        let title = errorTitle
+        let errormsg = errorMsg
         
-        NSOperationQueue.mainQueue().addOperationWithBlock{ var alert = UIAlertController(title: title, message: errormsg, preferredStyle: UIAlertControllerStyle.Alert)
+        NSOperationQueue.mainQueue().addOperationWithBlock{ let alert = UIAlertController(title: title, message: errormsg, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
                 self.dismissViewControllerAnimated(true, completion: nil)
             }))
